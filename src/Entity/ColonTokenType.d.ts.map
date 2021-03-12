@@ -1,0 +1,1 @@
+{"version":3,"file":"ColonTokenType.d.ts","sourceRoot":"","sources":["ColonTokenType.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,mBAAmB,CAAC;AAC1C,OAAO,UAAU,MAAM,yBAAyB,CAAC;AAEjD,cAAM,cAAe,YAAW,UAAU;IACtC,IAAI,EAAE,SAAS,CAAmB;IAClC,KAAK,EAAE,MAAM,CAAQ;IACrB,KAAK,EAAE,MAAM,CAAK;CACrB;AAED,eAAe,cAAc,CAAC"}

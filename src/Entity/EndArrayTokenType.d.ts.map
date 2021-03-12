@@ -1,0 +1,1 @@
+{"version":3,"file":"EndArrayTokenType.d.ts","sourceRoot":"","sources":["EndArrayTokenType.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,mBAAmB,CAAC;AAC1C,OAAO,UAAU,MAAM,yBAAyB,CAAC;AAEjD,cAAM,iBAAkB,YAAW,UAAU;IACzC,IAAI,EAAE,SAAS,CAAsB;IACrC,KAAK,EAAE,MAAM,CAAS;IACtB,KAAK,EAAE,MAAM,CAAK;CACrB;AAED,eAAe,iBAAiB,CAAC"}

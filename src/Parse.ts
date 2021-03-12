@@ -28,44 +28,32 @@ const REGISTERED_TOKEN_TYPES: Array<ITokenType> = [
 ];
 
 function Parse(input: string): Object | Array<Object> | null {
-    const RESULT: IToken[] = [];
+    const TOKENS: IToken[] = [];
 
     let _cursor = 0;
 
-    let _test = 0;
-
     while (_cursor < input.length) {
+
         const CURRENT = input.substring(_cursor);
 
         for (let i = 0; i < REGISTERED_TOKEN_TYPES.length; i++) {
+
             const TOKEN_TYPE: ITokenType = REGISTERED_TOKEN_TYPES[i];
             const REGEX_RESULT = TOKEN_TYPE.regex.exec(CURRENT);
+
             if (REGEX_RESULT !== null) {
-                _cursor += REGEX_RESULT[0].length;
-                console.log({
+
+                _cursor += REGEX_RESULT[TOKEN_TYPE.match].length;
+
+                TOKENS.push({
                     type: TOKEN_TYPE.type,
                     value: REGEX_RESULT[TOKEN_TYPE.match],
                 });
             }
         }
-
-        // for (const REGEX in EXPRESSIONS) {
-        //     const TEMP = (new RegExp(REGEX)).exec(CURRENT);
-
-        //     if (TEMP.length > 0) {
-        //         console.log(TEMP[0]);
-        //         _cursor += TEMP[0].length;
-        //     }
-        // }
-
-        _test++;
-
-        if (_test > 1000) {
-            break;
-        }
     }
 
-    return RESULT;
+    return TOKENS;
 }
 
 export default Parse;
