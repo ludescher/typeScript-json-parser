@@ -1,11 +1,30 @@
-import IExpression from "./Interface/IExpression";
 import IToken from "./Interface/IToken";
 import TokenType from "./Enum/TokenType";
 import ITokenType from "./Interface/ITokenType";
 import BooleanTokenType from "./Entity/BooleanTokenType";
+import ColonTokenType from "./Entity/ColonTokenType";
+import CommaTokenType from "./Entity/CommaTokenType";
+import EndArrayTokenType from "./Entity/EndArrayTokenType";
+import EndObjectTokenType from "./Entity/EndObjectTokenType";
+import NullTokenType from "./Entity/NullTokenType";
+import NumberTokenType from "./Entity/NumberTokenType";
+import WhitespaceTokenType from "./Entity/WhitespaceTokenType";
+import StringTokenType from "./Entity/StringTokenType";
+import StartObjectTokenType from "./Entity/StartObjectTokenType";
+import StartArrayTokenType from "./Entity/StartArrayTokenType";
 
-const EXPRESSIONS: Array<any> = [
-    BooleanTokenType,
+const EXPRESSIONS: Array<ITokenType> = [
+    new BooleanTokenType(),
+    new ColonTokenType(),
+    new CommaTokenType(),
+    new EndArrayTokenType(),
+    new EndObjectTokenType(),
+    new NullTokenType(),
+    new NumberTokenType(),
+    new StartArrayTokenType(),
+    new StartObjectTokenType(),
+    new StringTokenType(),
+    new WhitespaceTokenType(),
 ];
 
 function Parse(input: string): Object | Array<Object> | null {
@@ -19,17 +38,19 @@ function Parse(input: string): Object | Array<Object> | null {
         const CURRENT = input.substring(_cursor);
 
         for (let i = 0; i < EXPRESSIONS.length; i++) {
-            console.log(EXPRESSIONS[i]);
+            const TOKEN_TYPE: ITokenType = EXPRESSIONS[i];
+            const REGEX_RESULT = TOKEN_TYPE.regex.exec(CURRENT);
+            console.log(REGEX_RESULT);
         }
 
-        for (const REGEX in EXPRESSIONS) {
-            const TEMP = (new RegExp(REGEX)).exec(CURRENT);
+        // for (const REGEX in EXPRESSIONS) {
+        //     const TEMP = (new RegExp(REGEX)).exec(CURRENT);
 
-            if (TEMP.length > 0) {
-                console.log(TEMP[0]);
-                _cursor += TEMP[0].length;
-            }
-        }
+        //     if (TEMP.length > 0) {
+        //         console.log(TEMP[0]);
+        //         _cursor += TEMP[0].length;
+        //     }
+        // }
 
         _test++;
 
