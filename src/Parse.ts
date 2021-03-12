@@ -1,5 +1,4 @@
 import IToken from "./Interface/IToken";
-import TokenType from "./Enum/TokenType";
 import ITokenType from "./Interface/ITokenType";
 import BooleanTokenType from "./Entity/BooleanTokenType";
 import ColonTokenType from "./Entity/ColonTokenType";
@@ -30,7 +29,7 @@ const REGISTERED_TOKEN_TYPES: Array<ITokenType> = [
 function Parse(input: string): Object | Array<Object> | null {
     const TOKENS: IToken[] = [];
 
-    let _cursor = 0;
+    let _cursor: number = 0;
 
     while (_cursor < input.length) {
 

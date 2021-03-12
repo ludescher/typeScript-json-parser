@@ -1,14 +1,14 @@
-import BooleanTokenType from "./Entity/BooleanTokenType";
-import ColonTokenType from "./Entity/ColonTokenType";
-import CommaTokenType from "./Entity/CommaTokenType";
-import EndArrayTokenType from "./Entity/EndArrayTokenType";
-import EndObjectTokenType from "./Entity/EndObjectTokenType";
-import NullTokenType from "./Entity/NullTokenType";
-import NumberTokenType from "./Entity/NumberTokenType";
-import WhitespaceTokenType from "./Entity/WhitespaceTokenType";
-import StringTokenType from "./Entity/StringTokenType";
-import StartObjectTokenType from "./Entity/StartObjectTokenType";
-import StartArrayTokenType from "./Entity/StartArrayTokenType";
+import BooleanTokenType from "./Entity/BooleanTokenType.js";
+import ColonTokenType from "./Entity/ColonTokenType.js";
+import CommaTokenType from "./Entity/CommaTokenType.js";
+import EndArrayTokenType from "./Entity/EndArrayTokenType.js";
+import EndObjectTokenType from "./Entity/EndObjectTokenType.js";
+import NullTokenType from "./Entity/NullTokenType.js";
+import NumberTokenType from "./Entity/NumberTokenType.js";
+import WhitespaceTokenType from "./Entity/WhitespaceTokenType.js";
+import StringTokenType from "./Entity/StringTokenType.js";
+import StartObjectTokenType from "./Entity/StartObjectTokenType.js";
+import StartArrayTokenType from "./Entity/StartArrayTokenType.js";
 const REGISTERED_TOKEN_TYPES = [
     new BooleanTokenType(),
     new ColonTokenType(),
