@@ -13,7 +13,7 @@ import StringTokenType from "./Entity/StringTokenType";
 import StartObjectTokenType from "./Entity/StartObjectTokenType";
 import StartArrayTokenType from "./Entity/StartArrayTokenType";
 
-const EXPRESSIONS: Array<ITokenType> = [
+const REGISTERED_TOKEN_TYPES: Array<ITokenType> = [
     new BooleanTokenType(),
     new ColonTokenType(),
     new CommaTokenType(),
@@ -37,10 +37,16 @@ function Parse(input: string): Object | Array<Object> | null {
     while (_cursor < input.length) {
         const CURRENT = input.substring(_cursor);
 
-        for (let i = 0; i < EXPRESSIONS.length; i++) {
-            const TOKEN_TYPE: ITokenType = EXPRESSIONS[i];
+        for (let i = 0; i < REGISTERED_TOKEN_TYPES.length; i++) {
+            const TOKEN_TYPE: ITokenType = REGISTERED_TOKEN_TYPES[i];
             const REGEX_RESULT = TOKEN_TYPE.regex.exec(CURRENT);
-            console.log(REGEX_RESULT);
+            if (REGEX_RESULT !== null) {
+                _cursor += REGEX_RESULT[0].length;
+                console.log({
+                    type: TOKEN_TYPE.type,
+                    value: REGEX_RESULT[TOKEN_TYPE.match],
+                });
+            }
         }
 
         // for (const REGEX in EXPRESSIONS) {
