@@ -36,6 +36,7 @@ function Parse(input) {
                     type: TOKEN_TYPE.type,
                     value: REGEX_RESULT[TOKEN_TYPE.match],
                 });
+                break;
             }
         }
     }

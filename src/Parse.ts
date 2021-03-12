@@ -41,13 +41,15 @@ function Parse(input: string): Object | Array<Object> | null {
             const REGEX_RESULT = TOKEN_TYPE.regex.exec(CURRENT);
 
             if (REGEX_RESULT !== null) {
-                
+
                 _cursor += REGEX_RESULT[0].length;
 
                 TOKENS.push({
                     type: TOKEN_TYPE.type,
                     value: REGEX_RESULT[TOKEN_TYPE.match],
                 });
+
+                break;
             }
         }
     }
