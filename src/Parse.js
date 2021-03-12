@@ -31,7 +31,7 @@ function Parse(input) {
             const TOKEN_TYPE = REGISTERED_TOKEN_TYPES[i];
             const REGEX_RESULT = TOKEN_TYPE.regex.exec(CURRENT);
             if (REGEX_RESULT !== null) {
-                _cursor += REGEX_RESULT[TOKEN_TYPE.match].length;
+                _cursor += REGEX_RESULT[0].length;
                 TOKENS.push({
                     type: TOKEN_TYPE.type,
                     value: REGEX_RESULT[TOKEN_TYPE.match],
