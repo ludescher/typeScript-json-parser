@@ -3,7 +3,6 @@
     "version": "0.1.0",
     "description": "non",
     "main": "index.js",
-    "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -22,5 +21,6 @@
     "bugs": {
         "url": "https://github.com/ludescher/typescript-json-parser/issues"
     },
-    "homepage": "https://github.com/ludescher/typescript-json-parser#readme"
+    "homepage": "https://github.com/ludescher/typescript-json-parser#readme",
+    "devDependencies": {}
 }

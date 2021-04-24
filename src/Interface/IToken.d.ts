@@ -1,7 +1,9 @@
+import IValueType from "../Enum/IValueType";
 import TokenType from "../Enum/TokenType";
 interface IToken {
-    type: TokenType;
+    tokentype: TokenType;
     value: string;
+    valuetype: IValueType;
 }
 export default IToken;
 //# sourceMappingURL=IToken.d.ts.map
