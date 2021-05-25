@@ -48,7 +48,7 @@ enum TokenType {
     /**
      * Indicates that the token type is a JSON boolean.
      */
-     Boolean = 'Boolean',
+    Boolean = 'Boolean',
 
     /**
      * Indicates that the token type is the JSON literal "null".

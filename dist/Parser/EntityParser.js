@@ -1,4 +1,3 @@
-import ITokenType from "../Interface/ITokenType";
 import BooleanTokenType from "../Entity/BooleanTokenType";
 import ColonTokenType from "../Entity/ColonTokenType";
 import CommaTokenType from "../Entity/CommaTokenType";
@@ -11,10 +10,8 @@ import StringTokenType from "../Entity/StringTokenType";
 import StartObjectTokenType from "../Entity/StartObjectTokenType";
 import StartArrayTokenType from "../Entity/StartArrayTokenType";
 import TokenType from "../Enum/TokenType";
-import IToken from "../Interface/IToken";
 import IValueType from "../Enum/IValueType";
-
-const REGISTERED_TOKEN_TYPES: Array<ITokenType> = [
+const REGISTERED_TOKEN_TYPES = [
     new BooleanTokenType(),
     new ColonTokenType(),
     new CommaTokenType(),
@@ -27,137 +24,99 @@ const REGISTERED_TOKEN_TYPES: Array<ITokenType> = [
     new StringTokenType(),
     new WhitespaceTokenType(),
 ];
-
 class EntityParser {
-    private _entity: any;
-    private _input: string;
-    private _cursor: number;
-    private _token: IToken | null;
-    private _last_valuetype: IValueType | null;
-
-    constructor(entity: any, input: string) {
+    constructor(entity, input) {
         this._entity = entity;
         this._input = input;
         this._cursor = 0;
         this._token = null;
         this._last_valuetype = null;
     }
-
-    public PARSE(): Object | Array<Object> | null {
-
+    PARSE() {
         this.FetchToken();
-
         if (this._token !== null) {
             if (this._token.tokentype === TokenType.StartObject) {
                 return this.HandleObject();
             }
-
             if (this._token.tokentype === TokenType.StartArray) {
                 return this.HandleArray();
             }
         }
-
         return null;
     }
-
-    private HandleObject(): Object | null {
+    HandleObject() {
         const ENTITY = this._entity;
-        let _result: any = new ENTITY();
-
+        let _result = new ENTITY();
         while (this.FetchToken()) {
             if (!this._token) {
                 continue;
             }
-
             if (this._token.valuetype === IValueType.None) {
                 continue;
             }
-
             if (this._token.valuetype === IValueType.Value) {
                 continue;
             }
-
             const VALUE_TYPE = ENTITY.TypeMap[this._token.value];
-
             if (!VALUE_TYPE) {
                 continue;
             }
-
             const PROP = this._token.value;
-
             this.FetchToken();
             if (this._token.tokentype === TokenType.Colon) {
                 this.FetchToken();
             }
-
             const VALUE = this._token.value;
-
             _result[PROP] = this.ConvertValue(VALUE_TYPE, VALUE);
         }
-
         return _result;
     }
-
-    private HandleArray(): Array<Object> | null {
-
-        // TODO => impl. Array handling
-
+    HandleArray() {
         return null;
     }
-
-    private FetchToken(): boolean {
+    FetchToken() {
         if (this._cursor < this._input.length) {
             const CURRENT = this._input.substring(this._cursor);
-
             for (let i = 0; i < REGISTERED_TOKEN_TYPES.length; i++) {
-
-                const TOKEN_TYPE: ITokenType = REGISTERED_TOKEN_TYPES[i];
+                const TOKEN_TYPE = REGISTERED_TOKEN_TYPES[i];
                 const REGEX_RESULT = TOKEN_TYPE.regex.exec(CURRENT);
-
                 if (REGEX_RESULT !== null) {
+                    console.log("REGEX_RESULT()", {
+                        TOKEN_TYPE,
+                        REGEX_RESULT,
+                    });
                     this._cursor += REGEX_RESULT[0].length;
-
-                    const VALUETYPE: IValueType = this.GetValueType(TOKEN_TYPE.type);
-
+                    const VALUETYPE = this.GetValueType(TOKEN_TYPE.type);
                     this._token = {
                         tokentype: TOKEN_TYPE.type,
                         value: REGEX_RESULT[TOKEN_TYPE.match],
                         valuetype: VALUETYPE,
                     };
-
                     if (VALUETYPE !== IValueType.None) {
                         this._last_valuetype = VALUETYPE;
                     }
-
                     return true;
                 }
             }
         }
-
         this._token = null;
         return false;
     }
-
-    private GetValueType(tokentype: TokenType): IValueType {
+    GetValueType(tokentype) {
         if (this._last_valuetype !== IValueType.Property && this._last_valuetype !== IValueType.Value) {
-
             console.log("GetValueType(1)", this._last_valuetype);
-
             return this.GetValueTypeByTokenType(tokentype, IValueType.Property);
-        } else if (this._last_valuetype === IValueType.Property) {
-
+        }
+        else if (this._last_valuetype === IValueType.Property) {
             console.log("GetValueType(2)", this._last_valuetype);
-
             return this.GetValueTypeByTokenType(tokentype, IValueType.Value);
-        } else if (this._last_valuetype === IValueType.Value) {
-
+        }
+        else if (this._last_valuetype === IValueType.Value) {
             console.log("GetValueType(3)", this._last_valuetype);
-
             return this.GetValueTypeByTokenType(tokentype, IValueType.Property);
         }
     }
-
-    private GetValueTypeByTokenType(tokentype: TokenType, valuetype: IValueType): IValueType {
+    GetValueTypeByTokenType(tokentype, valuetype) {
         switch (tokentype) {
             case TokenType.Colon:
                 return IValueType.None;
@@ -179,15 +138,10 @@ class EntityParser {
                 return valuetype;
         }
     }
-
-    private ConvertValue(valueconvertername: string, value: string): any {
-
+    ConvertValue(valueconvertername, value) {
         console.warn("ConvertValue()", valueconvertername);
-
-        // TODO => convert value to (INT|BOOL|ARRAY|OBJECT)
-
         return value;
     }
 }
-
 export default EntityParser;
+//# sourceMappingURL=EntityParser.js.map

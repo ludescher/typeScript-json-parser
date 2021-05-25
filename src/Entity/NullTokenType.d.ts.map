@@ -1,1 +1,0 @@
-{"version":3,"file":"NullTokenType.d.ts","sourceRoot":"","sources":["NullTokenType.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,mBAAmB,CAAC;AAC1C,OAAO,UAAU,MAAM,yBAAyB,CAAC;AAEjD,cAAM,aAAc,YAAW,UAAU;IACrC,IAAI,EAAE,SAAS,CAAkB;IACjC,KAAK,EAAE,MAAM,CAAiB;IAC9B,KAAK,EAAE,MAAM,CAAK;CACrB;AAED,eAAe,aAAa,CAAC"}

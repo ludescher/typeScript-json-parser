@@ -1,0 +1,1 @@
+{"version":3,"file":"NullTokenType.js","sourceRoot":"","sources":["../../src/Entity/NullTokenType.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,mBAAmB,CAAC;AAG1C,MAAM,aAAa;IAAnB;QACI,SAAI,GAAc,SAAS,CAAC,IAAI,CAAC;QACjC,UAAK,GAAW,aAAa,CAAC;QAC9B,UAAK,GAAW,CAAC,CAAC;IACtB,CAAC;CAAA;AAED,eAAe,aAAa,CAAC"}

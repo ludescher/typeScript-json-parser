@@ -1,4 +1,4 @@
-import EntityParser from './src/Parser/EntityParser';
-import AbstractEntity from './src/Abstract/AbstractEntity';
+import EntityParser from './dist/Parser/EntityParser';
+import AbstractEntity from './dist/Abstract/AbstractEntity';
 
 export { EntityParser, AbstractEntity };

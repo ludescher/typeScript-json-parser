@@ -1,1 +1,0 @@
-{"version":3,"file":"WhitespaceTokenType.d.ts","sourceRoot":"","sources":["WhitespaceTokenType.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,mBAAmB,CAAC;AAC1C,OAAO,UAAU,MAAM,yBAAyB,CAAC;AAEjD,cAAM,mBAAoB,YAAW,UAAU;IAC3C,IAAI,EAAE,SAAS,CAAwB;IACvC,KAAK,EAAE,MAAM,CAAU;IACvB,KAAK,EAAE,MAAM,CAAK;CACrB;AAED,eAAe,mBAAmB,CAAC"}
