@@ -1,7 +1,7 @@
 abstract class AbstractEntity {
-    static EntityIdentifier: string | null = null;
-    static UniqueIdentifier: string = 'id';
-    static TypeMap: object = {};
+    static EntityIdentifier: string;
+    static UniqueIdentifier: string;
+    static TypeMap: object;
     entityId: string | null = null;
 }
 

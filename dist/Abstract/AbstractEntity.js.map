@@ -1,1 +1,1 @@
-{"version":3,"file":"AbstractEntity.js","sourceRoot":"","sources":["../../src/Abstract/AbstractEntity.ts"],"names":[],"mappings":"AAAA,MAAe,cAAc;IAA7B;QAII,aAAQ,GAAkB,IAAI,CAAC;IACnC,CAAC;;AAJU,+BAAgB,GAAkB,IAAI,CAAC;AACvC,+BAAgB,GAAW,IAAI,CAAC;AAChC,sBAAO,GAAW,EAAE,CAAC;AAIhC,eAAe,cAAc,CAAC"}
+{"version":3,"file":"AbstractEntity.js","sourceRoot":"","sources":["../../src/Abstract/AbstractEntity.ts"],"names":[],"mappings":"AAAA,MAAe,cAAc;IAA7B;QAII,aAAQ,GAAkB,IAAI,CAAC;IACnC,CAAC;CAAA;AAED,eAAe,cAAc,CAAC"}

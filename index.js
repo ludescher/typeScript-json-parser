@@ -1,4 +1,3 @@
-import EntityParser from './dist/Parser/EntityParser';
-import AbstractEntity from './dist/Abstract/AbstractEntity';
+import parseAsClass from './dist/Parser/ClassParser';
 
-export { EntityParser, AbstractEntity };
+JSON.parseAsClass = parseAsClass;
