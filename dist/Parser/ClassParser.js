@@ -11,6 +11,10 @@ import StringTokenType from "../TokenType/StringTokenType";
 import StartObjectTokenType from "../TokenType/StartObjectTokenType";
 import StartArrayTokenType from "../TokenType/StartArrayTokenType";
 import TokenType from "../Enum/TokenType";
+import InvalidTokenError from "../Error/InvalidTokenError";
+import InvalidJsonError from "../Error/InvalidJsonError";
+import PropertyValue from "../Entity/PropertyValue";
+import InvalidClassError from "../Error/InvalidClassError";
 const REGISTERED_TOKEN_TYPES = [
     new BooleanTokenType(),
     new ColonTokenType(),
@@ -28,27 +32,79 @@ function parseAsClass(entity_identifier, json_string) {
     var _a, _b;
     const RCLASS = ClassManager.GetRegisteredClass(entity_identifier);
     if (RCLASS === null) {
-        return null;
+        throw new InvalidClassError(entity_identifier);
     }
     const PARSER = FetchToken(json_string);
-    let token = PARSER.next();
-    console.log("First: ", token);
-    if (((_a = token.value) === null || _a === void 0 ? void 0 : _a.type) === TokenType.StartObject) {
+    let iterator_result = PARSER.next();
+    if (((_a = iterator_result.value) === null || _a === void 0 ? void 0 : _a.type) === TokenType.StartObject) {
         return ParseObject(PARSER, RCLASS);
     }
-    else if (((_b = token.value) === null || _b === void 0 ? void 0 : _b.type) === TokenType.StartArray) {
+    else if (((_b = iterator_result.value) === null || _b === void 0 ? void 0 : _b.type) === TokenType.StartArray) {
         return ParseArray(PARSER, RCLASS);
     }
-    throw new Error("Invalid json!");
+    throw new InvalidJsonError();
 }
 function ParseObject(parser, rclass) {
     const ENTITY = new rclass();
-    let token = parser.next();
-    while (token.done === false) {
-        console.log(token.value);
-        token = parser.next();
+    let iterator_result = parser.next();
+    if (iterator_result.value === null) {
+        throw new InvalidTokenError();
     }
-    console.log("Final: ", token);
+    let temp = new PropertyValue();
+    while (iterator_result.done === false) {
+        switch (iterator_result.value.type) {
+            case TokenType.Whitespace:
+                break;
+            case TokenType.StartObject:
+                if (temp.property === undefined) {
+                    throw new InvalidJsonError();
+                }
+                const CHILD_ENTITY_IDENTIFIER = rclass.TypeMap[temp.property];
+                const RCLASS = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
+                if (RCLASS === null) {
+                    throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
+                }
+                temp.value = ParseObject(parser, RCLASS);
+                break;
+            case TokenType.EndObject:
+                return ENTITY;
+                break;
+            case TokenType.StartArray:
+                throw new Error("TODO");
+                break;
+            case TokenType.EndArray:
+                break;
+            case TokenType.Colon:
+                break;
+            case TokenType.Comma:
+                break;
+            case TokenType.String:
+                if (temp.property === undefined) {
+                    temp.property = iterator_result.value.value;
+                }
+                else {
+                    temp.value = iterator_result.value.value;
+                }
+                break;
+            case TokenType.Number:
+                temp.value = iterator_result.value.value;
+                break;
+            case TokenType.Boolean:
+                temp.value = iterator_result.value.value;
+                break;
+            case TokenType.Null:
+                temp.value = iterator_result.value.value;
+                break;
+            default:
+                throw new InvalidTokenError();
+        }
+        if (temp.property !== undefined && temp.value !== undefined) {
+            ENTITY[temp.property] = temp.value;
+            temp.value = undefined;
+            temp.property = undefined;
+        }
+        iterator_result = parser.next();
+    }
     return ENTITY;
 }
 function ParseArray(parser, rclass) {

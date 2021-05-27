@@ -1,7 +1,9 @@
+import IKeyValue from "../Interface/IKeyValue";
+
 abstract class AbstractEntity {
     static EntityIdentifier: string;
     static UniqueIdentifier: string;
-    static TypeMap: object;
+    static TypeMap: IKeyValue;
     entityId: string | null = null;
 }
 

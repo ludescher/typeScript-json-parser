@@ -15,6 +15,10 @@ import StartArrayTokenType from "../TokenType/StartArrayTokenType";
 import AbstractEntity from "../Abstract/AbstractEntity";
 import TokenType from "../Enum/TokenType";
 import TokenGeneratorType from "../Type/TokenGeneratorType";
+import InvalidTokenError from "../Error/InvalidTokenError";
+import InvalidJsonError from "../Error/InvalidJsonError";
+import PropertyValue from "../Entity/PropertyValue";
+import InvalidClassError from "../Error/InvalidClassError";
 
 const REGISTERED_TOKEN_TYPES: ITokenType[] = [
     new BooleanTokenType(),
@@ -34,37 +38,94 @@ function parseAsClass(entity_identifier: string, json_string: string): AbstractE
     const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(entity_identifier);
 
     if (RCLASS === null) {
-        return null;
+        throw new InvalidClassError(entity_identifier);
     }
 
     const PARSER = FetchToken(json_string);
 
-    let token = PARSER.next();
+    let iterator_result = PARSER.next();
 
-    console.log("First: ", token);
-
-    if (token.value?.type === TokenType.StartObject) {
+    if (iterator_result.value?.type === TokenType.StartObject) {
         return ParseObject(PARSER, RCLASS);
-    } else if (token.value?.type === TokenType.StartArray) {
+    } else if (iterator_result.value?.type === TokenType.StartArray) {
         return ParseArray(PARSER, RCLASS);
     }
 
-    throw new Error("Invalid json!");
+    throw new InvalidJsonError();
 }
 
 function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEntity {
     const ENTITY: AbstractEntity = new rclass();
 
-    let token = parser.next();
+    let iterator_result = parser.next();
 
-    while (token.done === false) {
-
-        console.log(token.value);
-
-        token = parser.next();
+    if (iterator_result.value === null) {
+        throw new InvalidTokenError();
     }
 
-    console.log("Final: ", token);
+    let temp: PropertyValue = new PropertyValue();
+
+    while (iterator_result.done === false) {
+        switch (iterator_result.value.type) {
+            case TokenType.Whitespace:
+                break;
+            case TokenType.StartObject:
+                if (temp.property === undefined) {
+                    throw new InvalidJsonError();
+                }
+
+                const CHILD_ENTITY_IDENTIFIER: string = rclass.TypeMap[temp.property]; // TODO => parse Array<@orders> to @orders
+
+                const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
+
+                if (RCLASS === null) {
+                    throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
+                }
+
+                temp.value = ParseObject(parser, RCLASS);
+
+                break;
+            case TokenType.EndObject:
+                return ENTITY;
+                break;
+            case TokenType.StartArray:
+                throw new Error("TODO");
+                break;
+            case TokenType.EndArray:
+                break;
+            case TokenType.Colon:
+                break;
+            case TokenType.Comma:
+                break;
+            case TokenType.String:
+                if (temp.property === undefined) {
+                    temp.property = iterator_result.value.value;
+                } else {
+                    temp.value = iterator_result.value.value;
+                }
+                break;
+            case TokenType.Number:
+                temp.value = iterator_result.value.value;
+                break;
+            case TokenType.Boolean:
+                temp.value = iterator_result.value.value;
+                break;
+            case TokenType.Null:
+                temp.value = iterator_result.value.value;
+                break;
+            default:
+                throw new InvalidTokenError();
+        }
+
+        if (temp.property !== undefined && temp.value !== undefined) {
+            // @ts-ignore
+            ENTITY[temp.property] = temp.value; // TODO => convert value into actual type
+            temp.value = undefined;
+            temp.property = undefined;
+        }
+
+        iterator_result = parser.next();
+    }
 
     return ENTITY;
 }
