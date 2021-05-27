@@ -1,1 +1,0 @@
-{"version":3,"file":"BooleanTokenType.d.ts","sourceRoot":"","sources":["../../src/Entity/BooleanTokenType.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,mBAAmB,CAAC;AAC1C,OAAO,UAAU,MAAM,yBAAyB,CAAC;AAEjD,cAAM,gBAAiB,YAAW,UAAU;IACxC,IAAI,EAAE,SAAS,CAAqB;IACpC,KAAK,EAAE,MAAM,CAA+B;IAC5C,KAAK,EAAE,MAAM,CAAK;CACrB;AAED,eAAe,gBAAgB,CAAC"}

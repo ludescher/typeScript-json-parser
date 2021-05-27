@@ -1,1 +1,0 @@
-{"version":3,"file":"IToken.d.ts","sourceRoot":"","sources":["../../src/Interface/IToken.ts"],"names":[],"mappings":"AAAA,OAAO,UAAU,MAAM,oBAAoB,CAAC;AAC5C,OAAO,SAAS,MAAM,mBAAmB,CAAC;AAE1C,UAAU,MAAM;IACZ,SAAS,EAAE,SAAS,CAAC;IACrB,KAAK,EAAE,MAAM,CAAC;IACd,SAAS,EAAE,UAAU,CAAC;CACzB;AAED,eAAe,MAAM,CAAC"}
