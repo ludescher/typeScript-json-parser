@@ -1,4 +1,5 @@
 import ITokenType from "../Interface/ITokenType";
+
 import BooleanTokenType from "../Entity/BooleanTokenType";
 import ColonTokenType from "../Entity/ColonTokenType";
 import CommaTokenType from "../Entity/CommaTokenType";
@@ -10,11 +11,13 @@ import WhitespaceTokenType from "../Entity/WhitespaceTokenType";
 import StringTokenType from "../Entity/StringTokenType";
 import StartObjectTokenType from "../Entity/StartObjectTokenType";
 import StartArrayTokenType from "../Entity/StartArrayTokenType";
+
 import TokenType from "../Enum/TokenType";
+
 import IToken from "../Interface/IToken";
 import IValueType from "../Enum/IValueType";
 
-const REGISTERED_TOKEN_TYPES: Array<ITokenType> = [
+const REGISTERED_TOKEN_TYPES: ITokenType[] = [
     new BooleanTokenType(),
     new ColonTokenType(),
     new CommaTokenType(),

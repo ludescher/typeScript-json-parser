@@ -1,0 +1,1 @@
+{"version":3,"file":"NumberTokenType.d.ts","sourceRoot":"","sources":["../../src/TokenType/NumberTokenType.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,mBAAmB,CAAC;AAC1C,OAAO,UAAU,MAAM,yBAAyB,CAAC;AAEjD,cAAM,eAAgB,YAAW,UAAU;IACvC,IAAI,EAAE,SAAS,CAAoB;IACnC,KAAK,EAAE,MAAM,CAAoB;IACjC,KAAK,EAAE,MAAM,CAAK;CACrB;AAED,eAAe,eAAe,CAAC"}

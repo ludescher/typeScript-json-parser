@@ -1,29 +1,104 @@
+import ITokenType from "../Interface/ITokenType";
 import ClassManager from "../Manager/ClassManager";
 import ClassType from "../Type/ClassType";
+import BooleanTokenType from "../TokenType/BooleanTokenType";
+import ColonTokenType from "../TokenType/ColonTokenType";
+import CommaTokenType from "../TokenType/CommaTokenType";
+import EndArrayTokenType from "../TokenType/EndArrayTokenType";
+import EndObjectTokenType from "../TokenType/EndObjectTokenType";
+import NullTokenType from "../TokenType/NullTokenType";
+import NumberTokenType from "../TokenType/NumberTokenType";
+import WhitespaceTokenType from "../TokenType/WhitespaceTokenType";
+import StringTokenType from "../TokenType/StringTokenType";
+import StartObjectTokenType from "../TokenType/StartObjectTokenType";
+import StartArrayTokenType from "../TokenType/StartArrayTokenType";
+import AbstractEntity from "../Abstract/AbstractEntity";
+import TokenType from "../Enum/TokenType";
+import TokenGeneratorType from "../Type/TokenGeneratorType";
 
-function parseAsClass(entity_identifier: string, jsonstring: string): object | object[] | null {
+const REGISTERED_TOKEN_TYPES: ITokenType[] = [
+    new BooleanTokenType(),
+    new ColonTokenType(),
+    new CommaTokenType(),
+    new EndArrayTokenType(),
+    new EndObjectTokenType(),
+    new NullTokenType(),
+    new NumberTokenType(),
+    new StartArrayTokenType(),
+    new StartObjectTokenType(),
+    new StringTokenType(),
+    new WhitespaceTokenType(),
+];
+
+function parseAsClass(entity_identifier: string, json_string: string): AbstractEntity | AbstractEntity[] | null {
     const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(entity_identifier);
 
     if (RCLASS === null) {
         return null;
     }
 
-    const gen = Parser(10);
+    const PARSER = FetchToken(json_string);
 
-    console.log(gen.next().value);
-    // expected output: 10
+    let token = PARSER.next();
 
-    console.log(gen.next().value);
-    // expected output: 20
+    console.log("First: ", token);
 
+    if (token.value?.type === TokenType.StartObject) {
+        return ParseObject(PARSER, RCLASS);
+    } else if (token.value?.type === TokenType.StartArray) {
+        return ParseArray(PARSER, RCLASS);
+    }
 
-    return { class: RCLASS, jsonstring, test: new RCLASS() };
-
+    throw new Error("Invalid json!");
 }
 
-function* Parser(i: number): Generator<any, any, any> {
-    yield i;
-    yield i + 10;
+function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEntity {
+    const ENTITY: AbstractEntity = new rclass();
+
+    let token = parser.next();
+
+    while (token.done === false) {
+
+        console.log(token.value);
+
+        token = parser.next();
+    }
+
+    console.log("Final: ", token);
+
+    return ENTITY;
+}
+
+function ParseArray(parser: TokenGeneratorType, rclass: ClassType): AbstractEntity[] {
+    const RESULT: AbstractEntity[] = [];
+
+
+    return RESULT;
+}
+
+function* FetchToken(json_string: string): TokenGeneratorType {
+    let cursor: number = 0;
+    const STR_LENGTH = json_string.length;
+
+    while (cursor < STR_LENGTH) {
+        const CURRENT_INPUT: string = json_string.substring(cursor);
+
+        for (let i = 0; i < REGISTERED_TOKEN_TYPES.length; i++) {
+
+            const TOKEN_TYPE: ITokenType = REGISTERED_TOKEN_TYPES[i];
+            const REGEX_RESULT = TOKEN_TYPE.regex.exec(CURRENT_INPUT);
+
+            if (REGEX_RESULT !== null) {
+                cursor += REGEX_RESULT[0].length;
+                yield {
+                    type: TOKEN_TYPE.type,
+                    value: REGEX_RESULT[TOKEN_TYPE.match],
+                };
+            }
+        }
+    }
+
+    return null;
 }
 
 export default parseAsClass;
