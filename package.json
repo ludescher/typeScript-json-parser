@@ -23,7 +23,5 @@
     },
     "homepage": "https://github.com/ludescher/typescript-json-parser#readme",
     "devDependencies": {},
-    "dependencies": {
-        "typescript": "^4.3.2"
-    }
+    "dependencies": {}
 }
