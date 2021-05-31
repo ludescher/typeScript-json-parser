@@ -36,7 +36,7 @@ const REGISTERED_TOKEN_TYPES: ITokenType[] = [
     new WhitespaceTokenType(),
 ];
 
-function parseAsClass(entity_identifier: string, json_string: string): AbstractEntity | AbstractEntity[] | null {
+function parseAsClass(entity_identifier: string, json_string: string): AbstractEntity | any[] | null {
     const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(entity_identifier);
 
     if (RCLASS === null) {
@@ -96,7 +96,27 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
                 return ENTITY;
                 break;
             case TokenType.StartArray:
-                throw new Error("TODO");
+                if (temp.property === undefined) {
+                    throw new InvalidJsonError();
+                }
+
+                if (rclass.TypeMap[temp.property] === SupportedType.ArrayRelation) {
+                    // @ts-ignore
+                    const CHILD_ENTITY_IDENTIFIER: string = rclass.ConversionTypeMap[temp.property];
+                    const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
+
+                    if (RCLASS === null) {
+                        throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
+                    }
+
+                    temp.value = ParseArray(parser, RCLASS);
+                } else if (rclass.TypeMap[temp.property] === SupportedType.Array) {
+                    // @ts-ignore
+                    temp.value = ParseGenericArray(parser, rclass.ConversionTypeMap[temp.property]);
+                } else {
+                    throw new InvalidJsonError();
+                }
+
                 break;
             case TokenType.EndArray:
                 break;
@@ -138,9 +158,94 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
 }
 
 // @ts-ignore
-function ParseArray(parser: TokenGeneratorType, rclass: ClassType): AbstractEntity[] {
-    const RESULT: AbstractEntity[] = [];
+function ParseArray(parser: TokenGeneratorType, rclass: ClassType): any[] {
+    const RESULT: any[] = [];
 
+    let iterator_result = parser.next();
+
+    if (iterator_result.value === null) {
+        throw new InvalidTokenError();
+    }
+
+    while (iterator_result.done === false) {
+        switch (iterator_result.value.type) {
+            case TokenType.Whitespace:
+                break;
+            case TokenType.StartObject:
+                RESULT.push(ParseObject(parser, rclass));
+                break;
+            case TokenType.EndObject:
+                throw new InvalidJsonError();
+            case TokenType.StartArray:
+                RESULT.push(ParseArray(parser, rclass));
+                break;
+            case TokenType.EndArray:
+                return RESULT;
+            case TokenType.Colon:
+                break;
+            case TokenType.Comma:
+                break;
+            case TokenType.String:
+                throw new InvalidJsonError();
+            case TokenType.Number:
+                throw new InvalidJsonError();
+            case TokenType.Boolean:
+                throw new InvalidJsonError();
+            case TokenType.Null:
+                throw new InvalidJsonError();
+            default:
+                throw new InvalidTokenError();
+        }
+
+        iterator_result = parser.next();
+    }
+
+    return RESULT;
+}
+
+// @ts-ignore
+function ParseGenericArray(parser: TokenGeneratorType, value_type: SupportedType): any[] {
+    const RESULT: any[] = [];
+
+    let iterator_result = parser.next();
+
+    if (iterator_result.value === null) {
+        throw new InvalidTokenError();
+    }
+
+    while (iterator_result.done === false) {
+        switch (iterator_result.value.type) {
+            case TokenType.Whitespace:
+                break;
+            case TokenType.StartObject:
+                throw new MissingFeatureError("Generic objects are not yet supported!");
+            case TokenType.EndObject:
+                throw new InvalidJsonError();
+            case TokenType.StartArray:
+                throw new MissingFeatureError("Generic arrays with a depth of 2 or more are not yet supported!");
+            case TokenType.EndArray:
+                return RESULT;
+            case TokenType.Colon:
+                break;
+            case TokenType.Comma:
+                break;
+            case TokenType.String:
+                RESULT.push(iterator_result.value.value);
+                break;
+            case TokenType.Number:
+                RESULT.push(iterator_result.value.value);
+                break;
+            case TokenType.Boolean:
+                RESULT.push(iterator_result.value.value);
+                break;
+            case TokenType.Null:
+                throw new InvalidJsonError();
+            default:
+                throw new InvalidTokenError();
+        }
+
+        iterator_result = parser.next();
+    }
 
     return RESULT;
 }
