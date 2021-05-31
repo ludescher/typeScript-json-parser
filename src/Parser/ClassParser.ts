@@ -147,7 +147,7 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
 
         if (temp.property !== undefined && temp.value !== undefined) {
             // @ts-ignore
-            ENTITY[temp.property] = temp.value; // TODO => convert value into actual type
+            ENTITY[temp.property] = temp.value;
             temp.value = undefined;
             temp.property = undefined;
         }
