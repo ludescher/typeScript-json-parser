@@ -22,5 +22,8 @@
         "url": "https://github.com/ludescher/typescript-json-parser/issues"
     },
     "homepage": "https://github.com/ludescher/typescript-json-parser#readme",
-    "devDependencies": {}
+    "devDependencies": {},
+    "dependencies": {
+        "typescript": "^4.3.2"
+    }
 }
