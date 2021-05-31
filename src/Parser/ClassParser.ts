@@ -130,6 +130,9 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
     return ENTITY;
 }
 
+/**
+ * @todo
+ */
 function ParseArray(parser: TokenGeneratorType, rclass: ClassType): AbstractEntity[] {
     const RESULT: AbstractEntity[] = [];
 
