@@ -1,8 +1,8 @@
+import IClassEntry from "../Interface/IClassEntry";
 import ClassType from "../Type/ClassType";
-import ClassEntry from '../Interface/ClassEntry';
 
 class ClassManager {
-    private static classes: ClassEntry = {};
+    private static classes: IClassEntry = {};
 
     static RegisterClass(rclass: ClassType): void {
         if (!(rclass.EntityIdentifier in this.classes)) {

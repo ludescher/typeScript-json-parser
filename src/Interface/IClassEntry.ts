@@ -1,7 +1,7 @@
 import ClassType from "../Type/ClassType";
 
-interface ClassEntry {
+interface IClassEntry {
     [entity_identifier: string]: ClassType;
 }
 
-export default ClassEntry;
+export default IClassEntry;

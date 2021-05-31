@@ -15,6 +15,7 @@ import InvalidTokenError from "../Error/InvalidTokenError";
 import InvalidJsonError from "../Error/InvalidJsonError";
 import PropertyValue from "../Entity/PropertyValue";
 import InvalidClassError from "../Error/InvalidClassError";
+import SupportedType from "../Enum/SupportedType";
 const REGISTERED_TOKEN_TYPES = [
     new BooleanTokenType(),
     new ColonTokenType(),
@@ -59,12 +60,17 @@ function ParseObject(parser, rclass) {
                 if (temp.property === undefined) {
                     throw new InvalidJsonError();
                 }
-                const CHILD_ENTITY_IDENTIFIER = rclass.TypeMap[temp.property];
-                const RCLASS = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
-                if (RCLASS === null) {
-                    throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
+                if (rclass.TypeMap[temp.property] === SupportedType.Relation) {
+                    const CHILD_ENTITY_IDENTIFIER = rclass.GetConversionEntityIdentifier(temp.property);
+                    const RCLASS = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
+                    if (RCLASS === null) {
+                        throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
+                    }
+                    temp.value = ParseObject(parser, RCLASS);
                 }
-                temp.value = ParseObject(parser, RCLASS);
+                else {
+                    throw new Error("TODO => handle generic Object!");
+                }
                 break;
             case TokenType.EndObject:
                 return ENTITY;

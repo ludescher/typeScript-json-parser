@@ -1,1 +1,1 @@
-{"version":3,"file":"ClassParser.d.ts","sourceRoot":"","sources":["../../src/Parser/ClassParser.ts"],"names":[],"mappings":"AAcA,OAAO,cAAc,MAAM,4BAA4B,CAAC;AAsBxD,iBAAS,YAAY,CAAC,iBAAiB,EAAE,MAAM,EAAE,WAAW,EAAE,MAAM,GAAG,cAAc,GAAG,cAAc,EAAE,GAAG,IAAI,CAkB9G;AAiHD,eAAe,YAAY,CAAC"}
+{"version":3,"file":"ClassParser.d.ts","sourceRoot":"","sources":["../../src/Parser/ClassParser.ts"],"names":[],"mappings":"AAcA,OAAO,cAAc,MAAM,4BAA4B,CAAC;AAuBxD,iBAAS,YAAY,CAAC,iBAAiB,EAAE,MAAM,EAAE,WAAW,EAAE,MAAM,GAAG,cAAc,GAAG,cAAc,EAAE,GAAG,IAAI,CAkB9G;AAqHD,eAAe,YAAY,CAAC"}

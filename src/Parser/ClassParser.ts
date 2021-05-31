@@ -19,6 +19,7 @@ import InvalidTokenError from "../Error/InvalidTokenError";
 import InvalidJsonError from "../Error/InvalidJsonError";
 import PropertyValue from "../Entity/PropertyValue";
 import InvalidClassError from "../Error/InvalidClassError";
+import SupportedType from "../Enum/SupportedType";
 
 const REGISTERED_TOKEN_TYPES: ITokenType[] = [
     new BooleanTokenType(),
@@ -74,15 +75,19 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
                     throw new InvalidJsonError();
                 }
 
-                const CHILD_ENTITY_IDENTIFIER: string = rclass.TypeMap[temp.property]; // TODO => parse Array<@orders> to @orders
+                if (rclass.TypeMap[temp.property] === SupportedType.Relation) {
+                    const CHILD_ENTITY_IDENTIFIER: string = rclass.GetConversionEntityIdentifier(temp.property); // TODO => parse Array<@orders> to @orders
 
-                const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
+                    const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
 
-                if (RCLASS === null) {
-                    throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
+                    if (RCLASS === null) {
+                        throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
+                    }
+
+                    temp.value = ParseObject(parser, RCLASS);
+                } else {
+                    throw new Error("TODO => handle generic Object!");
                 }
-
-                temp.value = ParseObject(parser, RCLASS);
 
                 break;
             case TokenType.EndObject:

@@ -1,0 +1,1 @@
+{"version":3,"file":"InvalidPropertyError.js","sourceRoot":"","sources":["../../src/Error/InvalidPropertyError.ts"],"names":[],"mappings":"AAAA,MAAM,oBAAqB,SAAQ,KAAK;IAGpC,YAAY,WAA+B,SAAS;QAChD,KAAK,EAAE,CAAC;QAHZ,YAAO,GAAW,qCAAqC,CAAC;QAIpD,IAAI,QAAQ,KAAK,SAAS,EAAE;YACxB,IAAI,CAAC,OAAO,GAAG,uBAAuB,QAAQ,oBAAoB,CAAC;SACtE;IACL,CAAC;CACJ;AAED,eAAe,oBAAoB,CAAC"}
