@@ -110,13 +110,13 @@ function ParseObject(parser, rclass) {
                 }
                 break;
             case TokenType.Number:
-                temp.value = iterator_result.value.value;
+                temp.value = ConvertValueTo(iterator_result.value.value, rclass.TypeMap[temp.property]);
                 break;
             case TokenType.Boolean:
-                temp.value = iterator_result.value.value;
+                temp.value = ConvertValueTo(iterator_result.value.value, SupportedType.Boolean);
                 break;
             case TokenType.Null:
-                temp.value = iterator_result.value.value;
+                temp.value = ConvertValueTo(iterator_result.value.value, SupportedType.Null);
                 break;
             default:
                 throw new InvalidTokenError();
@@ -227,6 +227,20 @@ function* FetchToken(json_string) {
         }
     }
     return null;
+}
+function ConvertValueTo(value, type) {
+    switch (type) {
+        case SupportedType.Number:
+            return Number(value);
+        case SupportedType.Boolean:
+            return (value.toLowerCase() === 'true');
+        case SupportedType.Null:
+            return null;
+        case SupportedType.Date:
+            return new Date(parseInt(value) * 1000);
+        default:
+            return value;
+    }
 }
 export default parseAsClass;
 //# sourceMappingURL=ClassParser.js.map
