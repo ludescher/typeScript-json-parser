@@ -3,10 +3,11 @@ declare enum SupportedType {
     Number = 1,
     Boolean = 2,
     Relation = 3,
-    Array = 4,
-    Object = 5,
-    Null = 6,
-    Date = 7
+    ArrayRelation = 4,
+    Array = 5,
+    Object = 6,
+    Null = 7,
+    Date = 8
 }
 export default SupportedType;
 //# sourceMappingURL=SupportedType.d.ts.map

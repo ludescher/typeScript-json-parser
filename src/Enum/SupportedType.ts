@@ -3,6 +3,7 @@ enum SupportedType {
     Number,
     Boolean,
     Relation,
+    ArrayRelation,
     Array,
     Object,
     Null,

@@ -20,6 +20,7 @@ import InvalidJsonError from "../Error/InvalidJsonError";
 import PropertyValue from "../Entity/PropertyValue";
 import InvalidClassError from "../Error/InvalidClassError";
 import SupportedType from "../Enum/SupportedType";
+import MissingFeatureError from "../Error/MissingFeatureError";
 
 const REGISTERED_TOKEN_TYPES: ITokenType[] = [
     new BooleanTokenType(),
@@ -76,7 +77,8 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
                 }
 
                 if (rclass.TypeMap[temp.property] === SupportedType.Relation) {
-                    const CHILD_ENTITY_IDENTIFIER: string = rclass.GetConversionEntityIdentifier(temp.property); // TODO => parse Array<@orders> to @orders
+                    // @ts-ignore
+                    const CHILD_ENTITY_IDENTIFIER: string = rclass.ConversionTypeMap[temp.property];
 
                     const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
 
@@ -86,7 +88,7 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
 
                     temp.value = ParseObject(parser, RCLASS);
                 } else {
-                    throw new Error("TODO => handle generic Object!");
+                    throw new MissingFeatureError("Generic objects are not yet supported!");
                 }
 
                 break;
@@ -135,9 +137,7 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
     return ENTITY;
 }
 
-/**
- * @todo
- */
+// @ts-ignore
 function ParseArray(parser: TokenGeneratorType, rclass: ClassType): AbstractEntity[] {
     const RESULT: AbstractEntity[] = [];
 

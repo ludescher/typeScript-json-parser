@@ -16,6 +16,7 @@ import InvalidJsonError from "../Error/InvalidJsonError";
 import PropertyValue from "../Entity/PropertyValue";
 import InvalidClassError from "../Error/InvalidClassError";
 import SupportedType from "../Enum/SupportedType";
+import MissingFeatureError from "../Error/MissingFeatureError";
 const REGISTERED_TOKEN_TYPES = [
     new BooleanTokenType(),
     new ColonTokenType(),
@@ -61,7 +62,7 @@ function ParseObject(parser, rclass) {
                     throw new InvalidJsonError();
                 }
                 if (rclass.TypeMap[temp.property] === SupportedType.Relation) {
-                    const CHILD_ENTITY_IDENTIFIER = rclass.GetConversionEntityIdentifier(temp.property);
+                    const CHILD_ENTITY_IDENTIFIER = rclass.ConversionTypeMap[temp.property];
                     const RCLASS = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
                     if (RCLASS === null) {
                         throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
@@ -69,7 +70,7 @@ function ParseObject(parser, rclass) {
                     temp.value = ParseObject(parser, RCLASS);
                 }
                 else {
-                    throw new Error("TODO => handle generic Object!");
+                    throw new MissingFeatureError("Generic objects are not yet supported!");
                 }
                 break;
             case TokenType.EndObject:

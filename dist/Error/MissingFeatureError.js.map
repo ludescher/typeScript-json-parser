@@ -1,0 +1,1 @@
+{"version":3,"file":"MissingFeatureError.js","sourceRoot":"","sources":["../../src/Error/MissingFeatureError.ts"],"names":[],"mappings":"AAAA,MAAM,mBAAoB,SAAQ,KAAK;IACnC,YAAY,OAAe;QACvB,KAAK,EAAE,CAAC;QACR,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;IAC3B,CAAC;CACJ;AAED,eAAe,mBAAmB,CAAC"}
