@@ -139,7 +139,7 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
                 temp.value = ConvertValueTo(iterator_result.value.value, SupportedType.Boolean);
                 break;
             case TokenType.Null:
-                temp.value = ConvertValueTo(iterator_result.value.value, SupportedType.Null);
+                temp.value = null;
                 break;
             default:
                 throw new InvalidTokenError();
@@ -234,10 +234,10 @@ function ParseGenericArray(parser: TokenGeneratorType, value_type: SupportedType
                 RESULT.push(iterator_result.value.value);
                 break;
             case TokenType.Number:
-                RESULT.push(iterator_result.value.value);
+                RESULT.push(ConvertValueTo(iterator_result.value.value, SupportedType.Number));
                 break;
             case TokenType.Boolean:
-                RESULT.push(iterator_result.value.value);
+                RESULT.push(ConvertValueTo(iterator_result.value.value, SupportedType.Boolean));
                 break;
             case TokenType.Null:
                 throw new InvalidJsonError();
@@ -282,8 +282,6 @@ function ConvertValueTo(value: any, type: SupportedType): any {
             return Number(value);
         case SupportedType.Boolean:
             return (value.toLowerCase() === 'true');
-        case SupportedType.Null:
-            return null;
         case SupportedType.Date:
             return new Date(parseInt(value) * 1000);
         default:
