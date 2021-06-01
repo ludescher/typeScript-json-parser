@@ -148,6 +148,11 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
         if (temp.property !== undefined && temp.value !== undefined) {
             // @ts-ignore
             ENTITY[temp.property] = temp.value;
+            
+            if (rclass.UniqueIdentifier === temp.property) {
+                ENTITY["entityId"] = `${rclass.EntityIdentifier}/${temp.value}`;
+            }
+
             temp.value = undefined;
             temp.property = undefined;
         }
@@ -158,7 +163,6 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
     return ENTITY;
 }
 
-// @ts-ignore
 function ParseArray(parser: TokenGeneratorType, rclass: ClassType): any[] {
     const RESULT: any[] = [];
 
@@ -204,7 +208,6 @@ function ParseArray(parser: TokenGeneratorType, rclass: ClassType): any[] {
     return RESULT;
 }
 
-// @ts-ignore
 function ParseGenericArray(parser: TokenGeneratorType, value_type: SupportedType): any[] {
     const RESULT: any[] = [];
 
@@ -234,7 +237,7 @@ function ParseGenericArray(parser: TokenGeneratorType, value_type: SupportedType
                 RESULT.push(iterator_result.value.value);
                 break;
             case TokenType.Number:
-                RESULT.push(ConvertValueTo(iterator_result.value.value, SupportedType.Number));
+                RESULT.push(ConvertValueTo(iterator_result.value.value, value_type));
                 break;
             case TokenType.Boolean:
                 RESULT.push(ConvertValueTo(iterator_result.value.value, SupportedType.Boolean));

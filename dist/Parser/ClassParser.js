@@ -123,6 +123,9 @@ function ParseObject(parser, rclass) {
         }
         if (temp.property !== undefined && temp.value !== undefined) {
             ENTITY[temp.property] = temp.value;
+            if (rclass.UniqueIdentifier === temp.property) {
+                ENTITY["entityId"] = `${rclass.EntityIdentifier}/${temp.value}`;
+            }
             temp.value = undefined;
             temp.property = undefined;
         }
@@ -195,7 +198,7 @@ function ParseGenericArray(parser, value_type) {
                 RESULT.push(iterator_result.value.value);
                 break;
             case TokenType.Number:
-                RESULT.push(ConvertValueTo(iterator_result.value.value, SupportedType.Number));
+                RESULT.push(ConvertValueTo(iterator_result.value.value, value_type));
                 break;
             case TokenType.Boolean:
                 RESULT.push(ConvertValueTo(iterator_result.value.value, SupportedType.Boolean));
