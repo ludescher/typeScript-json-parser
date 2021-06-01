@@ -21,6 +21,7 @@ import PropertyValue from "../Entity/PropertyValue";
 import InvalidClassError from "../Error/InvalidClassError";
 import SupportedType from "../Enum/SupportedType";
 import MissingFeatureError from "../Error/MissingFeatureError";
+import EntityManager from "../Manager/EntityManager";
 
 const REGISTERED_TOKEN_TYPES: ITokenType[] = [
     new BooleanTokenType(),
@@ -48,7 +49,7 @@ function parseAsClass(entity_identifier: string, json_string: string): AbstractE
     let iterator_result = PARSER.next();
 
     if (iterator_result.value?.type === TokenType.StartObject) {
-        return ParseObject(PARSER, RCLASS);
+        return ParseObject(PARSER, RCLASS, false);
     } else if (iterator_result.value?.type === TokenType.StartArray) {
         return ParseArray(PARSER, RCLASS);
     }
@@ -56,7 +57,7 @@ function parseAsClass(entity_identifier: string, json_string: string): AbstractE
     throw new InvalidJsonError();
 }
 
-function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEntity {
+function ParseObject(parser: TokenGeneratorType, rclass: ClassType, reference: boolean = true): AbstractEntity {
     const ENTITY: AbstractEntity = new rclass();
 
     let iterator_result = parser.next();
@@ -93,7 +94,7 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
 
                 break;
             case TokenType.EndObject:
-                return ENTITY;
+                return ReturnParsedObject(ENTITY, rclass, reference);
                 break;
             case TokenType.StartArray:
                 if (temp.property === undefined) {
@@ -148,7 +149,7 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
         if (temp.property !== undefined && temp.value !== undefined) {
             // @ts-ignore
             ENTITY[temp.property] = temp.value;
-            
+
             if (rclass.UniqueIdentifier === temp.property) {
                 ENTITY["entityId"] = `${rclass.EntityIdentifier}/${temp.value}`;
             }
@@ -160,7 +161,7 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType): AbstractEnt
         iterator_result = parser.next();
     }
 
-    return ENTITY;
+    return ReturnParsedObject(ENTITY, rclass, reference);
 }
 
 function ParseArray(parser: TokenGeneratorType, rclass: ClassType): any[] {
@@ -290,6 +291,41 @@ function ConvertValueTo(value: any, type: SupportedType): any {
         default:
             return value;
     }
+}
+
+function ReturnParsedObject(entity: AbstractEntity, rclass: ClassType, reference: boolean): AbstractEntity {
+    const HANDLER = {
+        // @ts-ignore
+        get: function (target: AbstractEntity, prop: string, receiver: AbstractEntity) {
+            if (rclass.TypeMap[prop] === SupportedType.Relation) {
+                // @ts-ignore
+                return EntityManager.Get(Reflect.get(...arguments).entityId);
+            } else if (rclass.TypeMap[prop] === SupportedType.ArrayRelation) {
+                const RESULT: AbstractEntity[] = [];
+                // @ts-ignore
+                const TEMP_ENTITIES: AbstractEntity[] = Reflect.get(...arguments);
+                for (let i = 0; i < TEMP_ENTITIES.length; i++) {
+                    // @ts-ignore
+                    const TEMP_ENTITY: AbstractEntity = EntityManager.Get(TEMP_ENTITIES[i].entityId);
+                    if (TEMP_ENTITY !== null && TEMP_ENTITY !== undefined) {
+                        RESULT.push(TEMP_ENTITY);
+                    }
+                }
+                return RESULT;
+            }
+
+            // @ts-ignore
+            return Reflect.get(...arguments);
+        },
+    };
+
+    const PROXY = new Proxy(entity, HANDLER);
+    EntityManager.Add(PROXY);
+
+    if (reference === true) {
+        return { entityId: PROXY.entityId };
+    }
+    return PROXY;
 }
 
 export default parseAsClass;

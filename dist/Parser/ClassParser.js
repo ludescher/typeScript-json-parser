@@ -17,6 +17,7 @@ import PropertyValue from "../Entity/PropertyValue";
 import InvalidClassError from "../Error/InvalidClassError";
 import SupportedType from "../Enum/SupportedType";
 import MissingFeatureError from "../Error/MissingFeatureError";
+import EntityManager from "../Manager/EntityManager";
 const REGISTERED_TOKEN_TYPES = [
     new BooleanTokenType(),
     new ColonTokenType(),
@@ -39,14 +40,14 @@ function parseAsClass(entity_identifier, json_string) {
     const PARSER = FetchToken(json_string);
     let iterator_result = PARSER.next();
     if (((_a = iterator_result.value) === null || _a === void 0 ? void 0 : _a.type) === TokenType.StartObject) {
-        return ParseObject(PARSER, RCLASS);
+        return ParseObject(PARSER, RCLASS, false);
     }
     else if (((_b = iterator_result.value) === null || _b === void 0 ? void 0 : _b.type) === TokenType.StartArray) {
         return ParseArray(PARSER, RCLASS);
     }
     throw new InvalidJsonError();
 }
-function ParseObject(parser, rclass) {
+function ParseObject(parser, rclass, reference = true) {
     const ENTITY = new rclass();
     let iterator_result = parser.next();
     if (iterator_result.value === null) {
@@ -74,7 +75,7 @@ function ParseObject(parser, rclass) {
                 }
                 break;
             case TokenType.EndObject:
-                return ENTITY;
+                return ReturnParsedObject(ENTITY, rclass, reference);
                 break;
             case TokenType.StartArray:
                 if (temp.property === undefined) {
@@ -131,7 +132,7 @@ function ParseObject(parser, rclass) {
         }
         iterator_result = parser.next();
     }
-    return ENTITY;
+    return ReturnParsedObject(ENTITY, rclass, reference);
 }
 function ParseArray(parser, rclass) {
     const RESULT = [];
@@ -242,6 +243,33 @@ function ConvertValueTo(value, type) {
         default:
             return value;
     }
+}
+function ReturnParsedObject(entity, rclass, reference) {
+    const HANDLER = {
+        get: function (target, prop, receiver) {
+            if (rclass.TypeMap[prop] === SupportedType.Relation) {
+                return EntityManager.Get(Reflect.get(...arguments).entityId);
+            }
+            else if (rclass.TypeMap[prop] === SupportedType.ArrayRelation) {
+                const RESULT = [];
+                const TEMP_ENTITIES = Reflect.get(...arguments);
+                for (let i = 0; i < TEMP_ENTITIES.length; i++) {
+                    const TEMP_ENTITY = EntityManager.Get(TEMP_ENTITIES[i].entityId);
+                    if (TEMP_ENTITY !== null && TEMP_ENTITY !== undefined) {
+                        RESULT.push(TEMP_ENTITY);
+                    }
+                }
+                return RESULT;
+            }
+            return Reflect.get(...arguments);
+        },
+    };
+    const PROXY = new Proxy(entity, HANDLER);
+    EntityManager.Add(PROXY);
+    if (reference === true) {
+        return { entityId: PROXY.entityId };
+    }
+    return PROXY;
 }
 export default parseAsClass;
 //# sourceMappingURL=ClassParser.js.map
