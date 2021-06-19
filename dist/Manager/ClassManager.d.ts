@@ -4,7 +4,7 @@ declare class ClassManager {
     static RegisterClass(rclass: ClassType): void;
     static UnregisterClass(entity_identifier: string): void;
     static ClassIsRegistered(entity_identifier: string): boolean;
-    static GetRegisteredClass(entity_identifier: string): ClassType | null;
+    static GetRegisteredClass(entity_identifier: string): ClassType | undefined;
 }
 export default ClassManager;
 //# sourceMappingURL=ClassManager.d.ts.map

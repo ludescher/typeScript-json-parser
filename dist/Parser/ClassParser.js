@@ -34,7 +34,7 @@ const REGISTERED_TOKEN_TYPES = [
 function parseAsClass(entity_identifier, json_string) {
     var _a, _b;
     const RCLASS = ClassManager.GetRegisteredClass(entity_identifier);
-    if (RCLASS === null) {
+    if (RCLASS === undefined) {
         throw new InvalidClassError(entity_identifier);
     }
     const PARSER = FetchToken(json_string);
@@ -65,7 +65,7 @@ function ParseObject(parser, rclass, reference = true) {
                 if (rclass.TypeMap[temp.property] === SupportedType.Relation) {
                     const CHILD_ENTITY_IDENTIFIER = rclass.ConversionTypeMap[temp.property];
                     const RCLASS = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
-                    if (RCLASS === null) {
+                    if (RCLASS === undefined) {
                         throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
                     }
                     temp.value = ParseObject(parser, RCLASS);
@@ -84,7 +84,7 @@ function ParseObject(parser, rclass, reference = true) {
                 if (rclass.TypeMap[temp.property] === SupportedType.ArrayRelation) {
                     const CHILD_ENTITY_IDENTIFIER = rclass.ConversionTypeMap[temp.property];
                     const RCLASS = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
-                    if (RCLASS === null) {
+                    if (RCLASS === undefined) {
                         throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
                     }
                     temp.value = ParseArray(parser, RCLASS);

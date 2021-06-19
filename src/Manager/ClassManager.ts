@@ -1,33 +1,25 @@
-import IClassEntry from "../Interface/IClassEntry";
+import ClassEntryMap from "../Type/ClassEntryMap";
 import ClassType from "../Type/ClassType";
 
 class ClassManager {
-    private static classes: IClassEntry = {};
+    private static classes: ClassEntryMap = new Map();
 
     static RegisterClass(rclass: ClassType): void {
-        if (!(rclass.EntityIdentifier in this.classes)) {
-            this.classes[rclass.EntityIdentifier] = rclass;
+        if (this.classes.has(rclass.EntityIdentifier) === false) {
+            this.classes.set(rclass.EntityIdentifier, rclass);
         }
     }
 
     static UnregisterClass(entity_identifier: string): void {
-        if (entity_identifier in this.classes) {
-            delete this.classes[entity_identifier];
-        }
+        this.classes.delete(entity_identifier);
     }
 
     static ClassIsRegistered(entity_identifier: string): boolean {
-        if (entity_identifier in this.classes) {
-            return true;
-        }
-        return false;
+        return this.classes.has(entity_identifier);
     }
 
-    static GetRegisteredClass(entity_identifier: string): ClassType | null {
-        if (entity_identifier in this.classes) {
-            return this.classes[entity_identifier];
-        }
-        return null;
+    static GetRegisteredClass(entity_identifier: string): ClassType | undefined {
+        return this.classes.get(entity_identifier);
     }
 }
 

@@ -38,9 +38,9 @@ const REGISTERED_TOKEN_TYPES: ITokenType[] = [
 ];
 
 function parseAsClass(entity_identifier: string, json_string: string): AbstractEntity | any[] | null {
-    const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(entity_identifier);
+    const RCLASS: ClassType | undefined = ClassManager.GetRegisteredClass(entity_identifier);
 
-    if (RCLASS === null) {
+    if (RCLASS === undefined) {
         throw new InvalidClassError(entity_identifier);
     }
 
@@ -81,9 +81,9 @@ function ParseObject(parser: TokenGenerator, rclass: ClassType, reference: boole
                     // @ts-ignore
                     const CHILD_ENTITY_IDENTIFIER: string = rclass.ConversionTypeMap[temp.property];
 
-                    const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
+                    const RCLASS: ClassType | undefined = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
 
-                    if (RCLASS === null) {
+                    if (RCLASS === undefined) {
                         throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
                     }
 
@@ -104,9 +104,9 @@ function ParseObject(parser: TokenGenerator, rclass: ClassType, reference: boole
                 if (rclass.TypeMap[temp.property] === SupportedType.ArrayRelation) {
                     // @ts-ignore
                     const CHILD_ENTITY_IDENTIFIER: string = rclass.ConversionTypeMap[temp.property];
-                    const RCLASS: ClassType | null = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
+                    const RCLASS: ClassType | undefined = ClassManager.GetRegisteredClass(CHILD_ENTITY_IDENTIFIER);
 
-                    if (RCLASS === null) {
+                    if (RCLASS === undefined) {
                         throw new InvalidClassError(CHILD_ENTITY_IDENTIFIER);
                     }
 

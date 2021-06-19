@@ -1,27 +1,19 @@
 class ClassManager {
     static RegisterClass(rclass) {
-        if (!(rclass.EntityIdentifier in this.classes)) {
-            this.classes[rclass.EntityIdentifier] = rclass;
+        if (this.classes.has(rclass.EntityIdentifier) === false) {
+            this.classes.set(rclass.EntityIdentifier, rclass);
         }
     }
     static UnregisterClass(entity_identifier) {
-        if (entity_identifier in this.classes) {
-            delete this.classes[entity_identifier];
-        }
+        this.classes.delete(entity_identifier);
     }
     static ClassIsRegistered(entity_identifier) {
-        if (entity_identifier in this.classes) {
-            return true;
-        }
-        return false;
+        return this.classes.has(entity_identifier);
     }
     static GetRegisteredClass(entity_identifier) {
-        if (entity_identifier in this.classes) {
-            return this.classes[entity_identifier];
-        }
-        return null;
+        return this.classes.get(entity_identifier);
     }
 }
-ClassManager.classes = {};
+ClassManager.classes = new Map();
 export default ClassManager;
 //# sourceMappingURL=ClassManager.js.map
