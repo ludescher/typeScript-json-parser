@@ -3,17 +3,17 @@ class EntityManager {
         return this.entities;
     }
     static Get(entityId) {
-        return this.entities[entityId];
+        return this.entities.get(entityId);
     }
     static Add(entity) {
         if (entity.entityId !== null && entity.entityId !== undefined) {
-            this.entities[entity.entityId] = entity;
+            this.entities.set(entity.entityId, entity);
         }
     }
     static Remove(entityId) {
-        delete this.entities[entityId];
+        this.entities.delete(entityId);
     }
 }
-EntityManager.entities = {};
+EntityManager.entities = new Map();
 export default EntityManager;
 //# sourceMappingURL=EntityManager.js.map

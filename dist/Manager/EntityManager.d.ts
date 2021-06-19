@@ -1,8 +1,8 @@
 import AbstractEntity from "../Abstract/AbstractEntity";
-import IEntityEntry from "../Interface/IEntityEntry";
+import EntityEntryMap from "../Type/EntityEntryMap";
 declare class EntityManager {
     private static entities;
-    static All(): IEntityEntry;
+    static All(): EntityEntryMap;
     static Get(entityId: string): AbstractEntity | undefined;
     static Add(entity: AbstractEntity): void;
     static Remove(entityId: string): void;

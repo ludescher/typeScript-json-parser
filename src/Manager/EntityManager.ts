@@ -1,25 +1,25 @@
 import AbstractEntity from "../Abstract/AbstractEntity";
-import IEntityEntry from "../Interface/IEntityEntry";
+import EntityEntryMap from "../Type/EntityEntryMap";
 
 class EntityManager {
-    private static entities: IEntityEntry = {};
+    private static entities: EntityEntryMap = new Map();
 
-    static All(): IEntityEntry {
+    static All(): EntityEntryMap {
         return this.entities;
     }
 
     static Get(entityId: string): AbstractEntity | undefined {
-        return this.entities[entityId];
+        return this.entities.get(entityId);
     }
 
     static Add(entity: AbstractEntity): void {
         if (entity.entityId !== null && entity.entityId !== undefined) {
-            this.entities[entity.entityId] = entity;
+            this.entities.set(entity.entityId, entity);
         }
     }
 
     static Remove(entityId: string): void {
-        delete this.entities[entityId];
+        this.entities.delete(entityId);
     }
 }
 

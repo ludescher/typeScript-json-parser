@@ -14,7 +14,7 @@ import StartObjectTokenType from "../TokenType/StartObjectTokenType";
 import StartArrayTokenType from "../TokenType/StartArrayTokenType";
 import AbstractEntity from "../Abstract/AbstractEntity";
 import TokenType from "../Enum/TokenType";
-import TokenGeneratorType from "../Type/TokenGeneratorType";
+import TokenGenerator from "../Type/TokenGenerator";
 import InvalidTokenError from "../Error/InvalidTokenError";
 import InvalidJsonError from "../Error/InvalidJsonError";
 import PropertyValue from "../Entity/PropertyValue";
@@ -57,7 +57,7 @@ function parseAsClass(entity_identifier: string, json_string: string): AbstractE
     throw new InvalidJsonError();
 }
 
-function ParseObject(parser: TokenGeneratorType, rclass: ClassType, reference: boolean = true): AbstractEntity {
+function ParseObject(parser: TokenGenerator, rclass: ClassType, reference: boolean = true): AbstractEntity {
     const ENTITY: AbstractEntity = new rclass();
 
     let iterator_result = parser.next();
@@ -164,7 +164,7 @@ function ParseObject(parser: TokenGeneratorType, rclass: ClassType, reference: b
     return ReturnParsedObject(ENTITY, rclass, reference);
 }
 
-function ParseArray(parser: TokenGeneratorType, rclass: ClassType): any[] {
+function ParseArray(parser: TokenGenerator, rclass: ClassType): any[] {
     const RESULT: any[] = [];
 
     let iterator_result = parser.next();
@@ -209,7 +209,7 @@ function ParseArray(parser: TokenGeneratorType, rclass: ClassType): any[] {
     return RESULT;
 }
 
-function ParseGenericArray(parser: TokenGeneratorType, value_type: SupportedType): any[] {
+function ParseGenericArray(parser: TokenGenerator, value_type: SupportedType): any[] {
     const RESULT: any[] = [];
 
     let iterator_result = parser.next();
@@ -255,7 +255,7 @@ function ParseGenericArray(parser: TokenGeneratorType, value_type: SupportedType
     return RESULT;
 }
 
-function* FetchToken(json_string: string): TokenGeneratorType {
+function* FetchToken(json_string: string): TokenGenerator {
     let cursor: number = 0;
     const STR_LENGTH = json_string.length;
 
