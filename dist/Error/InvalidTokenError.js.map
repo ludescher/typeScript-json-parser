@@ -1,1 +1,1 @@
-{"version":3,"file":"InvalidTokenError.js","sourceRoot":"","sources":["../../src/Error/InvalidTokenError.ts"],"names":[],"mappings":"AAAA,MAAM,iBAAkB,SAAQ,KAAK;IAArC;;QACI,YAAO,GAAW,gBAAgB,CAAC;IACvC,CAAC;CAAA;AAED,eAAe,iBAAiB,CAAC"}
+{"version":3,"file":"InvalidTokenError.js","sourceRoot":"","sources":["../../src/Error/InvalidTokenError.ts"],"names":[],"mappings":"AAAA,MAAM,iBAAkB,SAAQ,KAAK;IAArC;;QACa,YAAO,GAAW,gBAAgB,CAAC;IAChD,CAAC;CAAA;AAED,eAAe,iBAAiB,CAAC"}

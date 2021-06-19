@@ -1,5 +1,5 @@
 class InvalidClassError extends Error {
-    message: string = "Trying to parse a non existing class!";
+    override message: string = "Trying to parse a non existing class!";
 
     constructor(classname: string | undefined = undefined) {
         super();

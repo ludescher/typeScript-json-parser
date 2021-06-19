@@ -1,5 +1,5 @@
 class InvalidPropertyError extends Error {
-    message: string = "The given property does not exists!";
+    override message: string = "The given property does not exists!";
 
     constructor(propname: string | undefined = undefined) {
         super();

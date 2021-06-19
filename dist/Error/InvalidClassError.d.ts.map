@@ -1,1 +1,1 @@
-{"version":3,"file":"InvalidClassError.d.ts","sourceRoot":"","sources":["../../src/Error/InvalidClassError.ts"],"names":[],"mappings":"AAAA,cAAM,iBAAkB,SAAQ,KAAK;IACjC,OAAO,EAAE,MAAM,CAA2C;gBAE9C,SAAS,GAAE,MAAM,GAAG,SAAqB;CAMxD;AAED,eAAe,iBAAiB,CAAC"}
+{"version":3,"file":"InvalidClassError.d.ts","sourceRoot":"","sources":["../../src/Error/InvalidClassError.ts"],"names":[],"mappings":"AAAA,cAAM,iBAAkB,SAAQ,KAAK;IACxB,OAAO,EAAE,MAAM,CAA2C;gBAEvD,SAAS,GAAE,MAAM,GAAG,SAAqB;CAMxD;AAED,eAAe,iBAAiB,CAAC"}

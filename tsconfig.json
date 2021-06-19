@@ -18,7 +18,7 @@
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "classic",
         // Linter Checks
-        // "noImplicitOverride": true,
+        "noImplicitOverride": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
