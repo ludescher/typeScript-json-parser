@@ -4,7 +4,7 @@ import EntityManager from './dist/Manager/EntityManager';
 import SupportedType from './dist/Enum/SupportedType';
 import AbstractEntity from './dist/Abstract/AbstractEntity';
 
-export default {
+export {
     parseAsClass,
     ClassManager,
     EntityManager,
