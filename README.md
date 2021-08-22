@@ -103,5 +103,74 @@ ClassManager.RegisterClass(Vehicle);
 ## 3. Parse json with the expected class identifier
 
 ```js
-const COMPANY = parseAsClass(Company.EntityIdentifier, TEST_DATA);
+/** @type {Company} COMPANY */
+const COMPANY = parseAsClass(Company.EntityIdentifier, JSON_STRING);
+```
+
+# Structure
+
+## `AbstractEntity`
+
+**Signature**:
+
+```js
+class AbstractEntity {
+    static EntityIdentifier: string;
+    static UniqueIdentifier: string;
+    static TypeMap: ITypeMapEntry = {};
+    static ConversionTypeMap: IConversionTypeMapEntry = {};
+    entityId: string | null = null;
+}
+```
+
+## `SupportedType`
+
+**Signature**:
+
+```js
+enum SupportedType {
+    String,
+    Number,
+    Boolean,
+    Relation,
+    ArrayRelation,
+    Array,
+    Object,
+    Null,
+    Date
+}
+```
+
+## `EntityManager`
+
+**Signature**:
+
+```js
+class EntityManager {
+    static All(): EntityEntryMap;
+    static Get(entityId: string): AbstractEntity | undefined;
+    static Add(entity: AbstractEntity, handler: Function, rclass: ClassType): AbstractEntity;
+    static Remove(entityId: string): void;
+}
+```
+
+## `ClassManager`
+
+**Signature**:
+
+```js
+class ClassManager {
+    static RegisterClass(rclass: ClassType): void;
+    static UnregisterClass(entity_identifier: string): void;
+    static ClassIsRegistered(entity_identifier: string): boolean;
+    static GetRegisteredClass(entity_identifier: string): ClassType | undefined;
+}
+```
+
+## `parseAsClass`
+
+**Signature**:
+
+```js
+function parseAsClass(entity_identifier: string, json_string: string): AbstractEntity | any[] | null;
 ```
