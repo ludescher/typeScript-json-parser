@@ -16,9 +16,16 @@ const COMPANY = parseAsClass(Company.EntityIdentifier, TEST_DATA);
 
 console.log(COMPANY);
 
+for (let i = 0; i < COMPANY.employees.length; i++) {
+
+    /** @type {User} EMPLOYEE */
+    const EMPLOYEE = COMPANY.employees[i];
+
+    console.log(`Employee: ${EMPLOYEE.firstname} ${EMPLOYEE.lastname}`);
+}
+
 for (let i = 0; i < COMPANY.tasks.length; i++) {
-    console.log(COMPANY.tasks[i].vehicle);
-    
+    console.log(COMPANY.tasks[i].vehicle.color);
 }
 
 console.log(EntityManager.All());
