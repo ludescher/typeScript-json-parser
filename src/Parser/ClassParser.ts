@@ -294,7 +294,7 @@ function ConvertValueTo(value: any, type: SupportedType): any {
 }
 
 function ReturnParsedObject(entity: AbstractEntity, rclass: ClassType, reference: boolean): AbstractEntity {
-    const HANDLER = {
+    const HANDLER: Function = {
         // @ts-ignore
         get: function (target: AbstractEntity, prop: string, receiver: AbstractEntity) {
             if (rclass.TypeMap[prop] === SupportedType.Relation) {
@@ -319,8 +319,7 @@ function ReturnParsedObject(entity: AbstractEntity, rclass: ClassType, reference
         },
     };
 
-    const PROXY = new Proxy(entity, HANDLER);
-    EntityManager.Add(PROXY);
+    const PROXY: AbstractEntity = EntityManager.Add(entity, HANDLER, rclass);
 
     if (reference === true) {
         return { entityId: PROXY.entityId };

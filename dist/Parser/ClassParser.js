@@ -264,8 +264,7 @@ function ReturnParsedObject(entity, rclass, reference) {
             return Reflect.get(...arguments);
         },
     };
-    const PROXY = new Proxy(entity, HANDLER);
-    EntityManager.Add(PROXY);
+    const PROXY = EntityManager.Add(entity, HANDLER, rclass);
     if (reference === true) {
         return { entityId: PROXY.entityId };
     }
